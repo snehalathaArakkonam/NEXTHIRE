@@ -15,7 +15,7 @@ const css = `
   body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
   ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
 
-  /* AURORA */
+  /* AURORA (background only, must not affect layout) */
   .aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
   .orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.1}
   .orb1{width:500px;height:500px;background:radial-gradient(#7c6aff,transparent);top:-150px;left:-100px;animation:fo 14s ease-in-out infinite}
@@ -49,7 +49,66 @@ const css = `
   .btn-s:hover{background:var(--surface2);border-color:var(--accent)}
   @keyframes fu{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 
-  /* ... (rest of CSS omitted for brevity in this file; original CSS will be injected at runtime) */
+  /* STATS (centered flex strip) */
+  .stats{position:relative;z-index:2;display:flex;justify-content:center;max-width:720px;margin:0 auto 60px;padding:0 20px;flex-wrap:wrap;width:100%}
+  .stat{flex:1;min-width:140px;text-align:center;padding:22px 18px;border:1px solid var(--border);background:var(--surface)}
+  .stat:first-child{border-radius:var(--r) 0 0 var(--r)}
+  .stat:last-child{border-radius:0 var(--r) var(--r) 0}
+  .stat+.stat{border-left:none}
+  .snum{font-size:34px;font-weight:800;background:linear-gradient(135deg,var(--text),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .slbl{font-size:12px;color:var(--text2);margin-top:3px}
+
+  /* MARQUEE */
+  .mq{position:relative;z-index:2;overflow:hidden;width:100%;padding:26px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:70px}
+  .mq-inner{display:flex;flex-direction:row;white-space:nowrap;width:max-content;gap:40px;animation:mq 28s linear infinite}
+  .mq-item{font-size:13px;font-weight:600;color:var(--text2);display:flex;align-items:center;gap:10px}
+  .mq-item span{color:var(--accent)}
+  @keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* SECTION wrapper (tools, features) — center container */
+  .sec{position:relative;z-index:2;max-width:1160px;margin:0 auto;padding:70px 20px;width:100%}
+  .sec-tag{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+  .sec-title{font-size:clamp(28px,3.5vw,48px);font-weight:800;letter-spacing:-1px;margin-bottom:14px}
+  .sec-sub{font-size:16px;color:var(--text2);max-width:500px;line-height:1.7;margin-bottom:40px}
+
+  /* TABS (left-aligned within section) */
+  .tabs{display:flex;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:5px;width:fit-content;margin-bottom:36px}
+  .tab{background:none;border:none;color:var(--text2);font-size:14px;font-weight:600;padding:9px 24px;border-radius:100px;cursor:pointer;transition:.25s;white-space:nowrap}
+  .tab.on{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 4px 16px rgba(124,106,255,.4)}
+
+  /* TOOL GRID */
+  .tgrid{display:grid;grid-template-columns:1fr 1fr;gap:20px;width:100%}
+  @media(max-width:860px){.tgrid{grid-template-columns:1fr}}
+
+  /* BENTO (features grid) */
+  .bento{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:100%}
+  @media(max-width:860px){.bento{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.bento{grid-template-columns:1fr}}
+  .bc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px;transition:.3s;position:relative;overflow:hidden}
+  .bc:hover{border-color:var(--border2);transform:translateY(-2px)}
+  .bc.lg{grid-column:span 2}
+  .bc-ico{font-size:30px;margin-bottom:14px;display:block}
+  .bc-ttl{font-size:18px;font-weight:800;margin-bottom:7px;letter-spacing:-.3px}
+  .bc-desc{font-size:13px;color:var(--text2);line-height:1.7}
+
+  /* PANEL and form elements should sit above aurora */
+  .panel{background:rgba(255,255,255,0.025);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:var(--r);padding:24px;position:relative;z-index:2;overflow:hidden;transition:border-color .3s}
+
+  /* FOOTER */
+  .footer{width:100%;text-align:center;padding:44px 20px;position:relative;z-index:2;border-top:1px solid var(--border)}
+  .f-logo{font-size:22px;font-weight:800;background:linear-gradient(135deg,#fff,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px}
+  .f-sub{font-size:13px;color:var(--text3)}
+
+  /* Ensure visible sections render above background */
+  .hero, .sec, .stats, .mq, .panel, .bento, .footer { position: relative; z-index: 2 }
+
+  /* small helpers */
+  .lbl{font-size:13px;font-weight:600;color:var(--text2);margin-bottom:7px;display:block}
+  .ta{width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:var(--r2);color:var(--text);font-family:var(--font);font-size:14px;line-height:1.7;padding:14px;resize:vertical;min-height:160px;outline:none;transition:border-color .2s}
+  .inp{width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:var(--r2);color:var(--text);font-family:var(--font);font-size:14px;padding:11px 14px;outline:none;transition:border-color .2s}
+
+  /* MARQUEE animation remains */
+  @keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 `;
 
 const MQ_ITEMS = ["ATS Score Analysis","Skill Gap Detection","AI Resume Improvements","Professional Email Writer","Tone Customization","Keyword Optimizer","Cover Letter Generator","LinkedIn Summary","Job Match Score","Real-time Feedback"];
